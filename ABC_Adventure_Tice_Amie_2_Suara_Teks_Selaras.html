@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ABC Adventure 2.0 — Tice Amie</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap');
+:root{--ink:#25304a;--pink:#ff6fae;--yellow:#ffd84d;--blue:#55c9f4;--green:#62d69a;--purple:#9b82ff}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Trebuchet MS",Arial,sans-serif;color:var(--ink);background:linear-gradient(135deg,#a8eaff,#ffd6e8 48%,#fff0a8);min-height:100vh;overflow-x:hidden}
+button{font:inherit;border:0;cursor:pointer}
+.app{max-width:1050px;margin:auto;padding:14px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.brand{font-size:clamp(21px,4vw,34px);font-weight:1000;text-shadow:2px 3px #fff}
+.pill{background:#fff;padding:9px 14px;border-radius:999px;font-weight:900;box-shadow:0 4px 0 #d8d9e8}
+.scene{position:relative;margin:14px 0;background:linear-gradient(#7ddfff 0 62%,#9be77b 62%);border:6px solid #fff;border-radius:28px;min-height:190px;overflow:hidden;box-shadow:0 8px 0 #8ebbd2}
+.cloud{position:absolute;font-size:44px;animation:drift 13s linear infinite;opacity:.9}
+.cloud.c1{top:12px;left:-70px}.cloud.c2{top:60px;left:55%;animation-duration:17s}
+.sun{position:absolute;right:7%;top:12px;font-size:52px;animation:spin 18s linear infinite}
+.hill{position:absolute;bottom:-40px;width:260px;height:100px;border-radius:50%;background:#70d86e}
+.h1{left:-30px}.h2{right:-30px;background:#59c96c}
+.runner{position:absolute;bottom:17px;left:8%;font-size:58px;animation:bounce 1s ease-in-out infinite;z-index:2}
+.flag{position:absolute;right:9%;bottom:28px;font-size:42px;animation:wave 1.2s ease-in-out infinite}
+@keyframes drift{from{transform:translateX(0)}to{transform:translateX(115vw)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes bounce{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-13px) rotate(4deg)}}
+@keyframes wave{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}}
+.panel{background:#ffffffed;border:4px solid white;border-radius:26px;padding:18px;box-shadow:0 7px 0 #d5c9e8}
+h1,h2,p{margin-top:0}
+h1{font-size:clamp(24px,5vw,38px);margin-bottom:8px}
+.sub{font-size:17px;font-weight:700;color:#58617a}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.progress{height:13px;background:#e9e9f6;border-radius:99px;overflow:hidden;margin:12px 0}
+.bar{height:100%;width:0;background:linear-gradient(90deg,#55d7a1,#4ebcf5,#a18aff);transition:width .5s}
+.question{font-size:clamp(22px,4vw,30px);font-weight:1000;text-align:center;margin:12px 0}
+.stage{min-height:150px;display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap}
+.glyph-a{font-family:"Poppins","Trebuchet MS",Arial,sans-serif;font-weight:700}.glyph-I{font-family:"Times New Roman",Times,serif;font-weight:700}.bigletter{font-size:clamp(86px,19vw,140px);font-weight:1000;color:#ff629d;text-shadow:4px 5px #ffe18a;animation:pop 1.2s ease-in-out infinite}
+@keyframes pop{0%,100%{transform:scale(1) rotate(-3deg)}50%{transform:scale(1.12) rotate(3deg)}}
+.picture{font-size:clamp(65px,15vw,105px);animation:bounce 1.5s infinite}
+.answers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:12px}
+.answer{background:#fff;border:4px solid #dce8ff;border-radius:20px;padding:14px 8px;font-size:clamp(27px,6vw,42px);font-weight:1000;box-shadow:0 5px 0 #d6d9e8;transition:.15s;min-height:75px}
+.answer:active{transform:translateY(4px);box-shadow:0 1px 0 #d6d9e8}
+.answer:hover{transform:translateY(-4px) rotate(-1deg);border-color:#ffb7d5}
+.actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+.primary,.secondary{padding:13px 20px;border-radius:999px;font-weight:1000;font-size:17px;box-shadow:0 5px 0 #b6b6cc}
+.primary{background:linear-gradient(90deg,#ff70aa,#ffb45f);color:white}
+.secondary{background:#e8f5ff;color:#34415e}
+.feedback{text-align:center;font-weight:1000;font-size:21px;min-height:30px;margin-top:10px}
+.good{color:#169b64}.bad{color:#e05276}
+.bubbles{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:5}
+.bubble{position:absolute;font-size:28px;animation:rise 1.4s ease-out forwards}
+@keyframes rise{0%{transform:translateY(0) scale(.5);opacity:1}100%{transform:translateY(-240px) rotate(300deg) scale(1.5);opacity:0}}
+.hide{display:none!important}
+.small{font-size:14px;color:#626b83;font-weight:700;text-align:center;margin-top:14px}
+@media(max-width:560px){.app{padding:9px}.panel{padding:13px}.answers{gap:8px}.answer{min-height:66px}.scene{min-height:150px}}
+</style>
+</head>
+<body>
+<div class="bubbles" id="bubbles"></div>
+<div class="app">
+ <div class="top">
+  <div class="brand">🚀 ABC ADVENTURE <span style="color:#ff5c9c">2.0</span></div>
+  <div class="row">
+   <div class="pill">⭐ <span id="stars">0</span></div>
+   <div class="pill">🏅 Misi <span id="missionNo">1</span>/10</div>
+  </div>
+ </div>
+ <div class="scene">
+  <div class="cloud c1">☁️</div><div class="cloud c2">☁️</div><div class="sun">☀️</div>
+  <div class="hill h1"></div><div class="hill h2"></div>
+  <div class="runner" id="runner">🐰</div><div class="flag">🏁</div>
+ </div>
+ <section class="panel" id="game">
+  <div class="row"><div><h1 id="missionTitle">Misi 1: Kenali Huruf</h1><div class="sub" id="instruction">Pilih huruf yang disebut.</div></div><div class="pill">❤️ <span id="lives">3</span></div></div>
+  <div class="progress"><div class="bar" id="bar"></div></div>
+  <div class="question" id="question">Cari huruf A!</div>
+  <div class="stage" id="stage"><div class="bigletter">A</div><div class="picture">🍎</div></div>
+  <div class="answers" id="answers"></div>
+  <div class="feedback" id="feedback"></div>
+  <div class="actions">
+   <button class="secondary" onclick="speakPrompt()">🔊 Dengar</button>
+   <button class="secondary" onclick="toggleSound()" id="soundBtn">🔔 Bunyi: ON</button>
+   <button class="primary hide" id="nextBtn" onclick="nextQuestion()">Seterusnya ➜</button>
+  </div>
+ </section>
+ <section class="panel hide" id="finish">
+  <div style="text-align:center">
+   <div style="font-size:76px;animation:bounce 1s infinite">🏆🎉</div>
+   <h1>Hebatnya, Juara ABC!</h1>
+   <p class="sub">Tice Amie bangga dengan kamu!</p>
+   <h2>⭐ Bintang dikumpul: <span id="finalStars">0</span></h2>
+   <button class="primary" onclick="restart()">Main Semula 🔄</button>
+  </div>
+ </section>
+ <div class="small">SEKOLAH TICE AMIE • Belajar sambil bermain 🌈</div>
+</div>
+<script>
+const letters="ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+const pictures={A:"🐔",B:"⚽",C:"☕",D:"🎲",E:"🐘",F:"🦩",G:"🦒",H:"🐯",I:"🐟",J:"🌺",K:"🐱",L:"🐝",M:"🐒",N:"🍍",O:"🍊",P:"🍌",Q:"👑",R:"🦌",S:"🦁",T:"🐭",U:"🐍",V:"🚐",W:"🪁",X:"🎼",Y:"🪀",Z:"🦓"};
+const names={A:"ayam",B:"bola",C:"cawan",D:"dadu",E:"ekor",F:"foto",G:"gajah",H:"harimau",I:"ikan",J:"jari",K:"kuda",L:"lampu",M:"mata",N:"nanas",O:"oren",P:"pisang",Q:"qari",R:"roti",S:"susu",T:"topi",U:"ular",V:"van",W:"wau",X:"xilofon",Y:"yoyo",Z:"zirafah"};
+const missions=[
+ ["Kenali Huruf Besar","Pilih huruf besar yang betul."],
+ ["Kenali Huruf Kecil","Cari huruf kecil yang sepadan."],
+ ["Padankan Besar & Kecil","Pilih huruf kecil bagi huruf besar."],
+ ["Cari Huruf Awal","Lihat gambar dan pilih huruf awal."],
+ ["Dengar dan Pilih","Dengar sebutan, kemudian pilih huruf."],
+ ["Huruf Hilang","Lengkapkan turutan abjad."],
+ ["Misi Huruf Vokal","Cari huruf vokal."],
+ ["Misi Konsonan","Pilih huruf konsonan."],
+ ["Pasangan Huruf","Padankan huruf besar dan kecil."],
+ ["Cabaran Juara ABC","Selesaikan cabaran terakhir!"]
+];
+let mission=0,qIndex=0,stars=0,lives=3,sound=true,questions=[];
+function glyphs(value){
+ return String(value).split("").map(ch=>{
+  if(ch==="a") return '<span class="glyph-a">a</span>';
+  if(ch==="I") return '<span class="glyph-I">I</span>';
+  return ch;
+ }).join("");
+}
+function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
+function makeQuestions(){
+ let arr=[];
+ for(let i=0;i<(mission===3?7:5);i++){
+  let l=letters[(mission*3+i*5)%26], opts;
+  if(mission===0) opts=[l,letters[(letters.indexOf(l)+3)%26],letters[(letters.indexOf(l)+7)%26]];
+  else if(mission===1) opts=[l.toLowerCase(),letters[(letters.indexOf(l)+2)%26].toLowerCase(),letters[(letters.indexOf(l)+5)%26].toLowerCase()];
+  else if(mission===2||mission===8) opts=[l.toLowerCase(),letters[(letters.indexOf(l)+1)%26].toLowerCase(),letters[(letters.indexOf(l)+4)%26].toLowerCase()];
+  else if(mission===3) {
+   const awal=[["A","🔥"],["B","📚"],["K","🐸"],["C","🐛"],["D","🍃"],["J","🌽"],["G","🐘"]];
+   l=awal[i][0];
+   opts=shuffle([l,["E","P","M","H","T","S","R"][i],["U","F","N","W","L","V","Q"][i]]);
+  }
+  else if(mission===4) opts=[l,letters[(letters.indexOf(l)+6)%26],letters[(letters.indexOf(l)+9)%26]];
+  else if(mission===5){l=letters[(i*2+1)%24];opts=[letters[letters.indexOf(l)+1],letters[letters.indexOf(l)+2],letters[letters.indexOf(l)+3]]; }
+  else if(mission===6){l=["A","E","I","O","U"][i];opts=[l,["B","C","D","F","G"][i],["K","L","M","N","P"][i]];}
+  else if(mission===7){l=["B","C","D","F","G"][i];opts=[l,["A","E","I","O","U"][i],["J","K","L","M","N"][i]];}
+  else {l=letters[(mission*2+i*3)%26];opts=[l,letters[(letters.indexOf(l)+2)%26],letters[(letters.indexOf(l)+5)%26]];}
+  arr.push({letter:l,opts:shuffle(opts),correct:mission===5?opts[0]:([1,2,8].includes(mission)?l.toLowerCase():l), pic:mission===3?["🔥","📚","🐸","🐛","🍃","🌽","🐘"][i]:(pictures[l]||"🌟")});
+ }
+ return arr;
+}
+function render(){
+ document.getElementById("missionNo").textContent=mission+1;
+ document.getElementById("missionTitle").textContent="Misi "+(mission+1)+": "+missions[mission][0];
+ document.getElementById("instruction").textContent=missions[mission][1];
+ document.getElementById("stars").textContent=stars;
+ document.getElementById("lives").textContent=lives;
+ document.getElementById("bar").style.width=((qIndex/questions.length)*100)+"%";
+ const q=questions[qIndex];let prompt="",stage="";
+ if(mission===0){prompt="Cari huruf "+q.letter+"!";stage=`<div class="bigletter">${q.letter}</div>`;}
+ if(mission===1){prompt="Cari huruf kecil "+q.letter+"!";stage=`<div class="bigletter">${q.letter}</div>`;}
+ if(mission===2||mission===8){prompt="Apakah pasangan huruf kecil bagi "+q.letter.toUpperCase()+"?";stage=`<div class="bigletter">${q.letter.toUpperCase()}</div>`;}
+ if(mission===3){prompt="Apakah huruf pertama bagi gambar ini?";stage=`<div class="picture">${q.pic}</div>`;}
+ if(mission===4){prompt="Dengar dan pilih huruf yang disebut.";stage=`<div class="picture">👂</div><div class="bigletter">?</div>`;}
+ if(mission===5){prompt="Huruf apakah selepas "+letters[letters.indexOf(q.correct)-1]+"?";stage=`<div class="bigletter">${letters[letters.indexOf(q.correct)-1]} _</div>`;}
+ if(mission===6){prompt="Pilih huruf vokal.";stage=`<div class="picture">🎤</div><div class="bigletter">A E I O U</div>`;}
+ if(mission===7){prompt="Pilih huruf konsonan.";stage=`<div class="picture">🧩</div><div class="bigletter">?</div>`;}
+ if(mission===9){prompt="Cabaran terakhir! Cari huruf "+q.letter+".";stage=`<div class="picture">🚀</div><div class="bigletter">${q.letter}</div>`;}
+ document.getElementById("question").innerHTML=glyphs(prompt);
+ document.getElementById("stage").innerHTML=stage;
+ const big=document.querySelector("#stage .bigletter");
+ if(big) big.innerHTML=glyphs(big.textContent);
+ document.getElementById("answers").innerHTML=q.opts.map(o=>`<button class="answer" onclick="choose('${o}')">${glyphs(o)}</button>`).join("");
+ document.getElementById("feedback").textContent="";
+ document.getElementById("nextBtn").classList.add("hide");
+ document.getElementById("bar").style.width=((qIndex/questions.length)*100)+"%";
+}
+function choose(value){
+ const q=questions[qIndex],fb=document.getElementById("feedback");
+ const buttons=[...document.querySelectorAll(".answer")];
+ if(value===q.correct){
+  stars++;document.getElementById("stars").textContent=stars;
+  const pujian=["Syabas! Tepat sekali! 🌟","Hebat! Teruskan! 🎉","Yeay! Kamu berjaya! 🥳"][Math.floor(Math.random()*3)];
+  fb.textContent=pujian;
+  fb.className="feedback good";celebrate();document.getElementById("runner").textContent="🐰💨";
+  buttons.forEach(b=>b.disabled=true);
+  document.getElementById("nextBtn").classList.remove("hide");
+  if(sound) speak(pujian.replace(/[🌟🎉🥳]/g,""));
+ }else{
+  lives=Math.max(0,lives-1);document.getElementById("lives").textContent=lives;
+  fb.textContent=lives>0?"Belum tepat. Cuba lagi ya! 💪":"Tak mengapa! Jawapan yang betul ialah "+q.correct+".";
+  fb.className="feedback bad";
+  if(lives===0){
+   buttons.forEach(b=>b.disabled=true);
+   document.getElementById("nextBtn").classList.remove("hide");
+  }
+ }
+}
+function nextQuestion(){
+ lives=3;qIndex++;
+ if(qIndex>=questions.length){mission++;qIndex=0;if(mission>=10){document.getElementById("game").classList.add("hide");document.getElementById("finish").classList.remove("hide");document.getElementById("finalStars").textContent=stars;return;}questions=makeQuestions();document.getElementById("runner").textContent="🐰🏃";}
+ render();
+}
+function speakPrompt(){const q=questions[qIndex];speak(q.correct);}
+function speak(t){if(!sound||!("speechSynthesis"in window))return;speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(t);u.lang="ms-MY";u.rate=.78;speechSynthesis.speak(u);}
+function toggleSound(){sound=!sound;document.getElementById("soundBtn").textContent="🔔 Bunyi: "+(sound?"ON":"OFF");}
+function celebrate(){let b=document.getElementById("bubbles");["⭐","✨","🎈","🌈","💖"].forEach((e,i)=>{let x=document.createElement("div");x.className="bubble";x.textContent=e;x.style.left=(15+i*17)+"%";x.style.bottom="12%";b.appendChild(x);setTimeout(()=>x.remove(),1500);});}
+function restart(){mission=0;qIndex=0;stars=0;lives=3;questions=makeQuestions();document.getElementById("finish").classList.add("hide");document.getElementById("game").classList.remove("hide");render();}
+questions=makeQuestions();render();
+</script>
+</body></html>
