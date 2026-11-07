@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cari Perkataan Betul – Tice Amie</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:"Trebuchet MS",Arial,sans-serif;background:linear-gradient(135deg,#d8f4ff,#fff1c9);color:#24523e;min-height:100vh}
+header{text-align:center;background:#fffdf2;padding:12px 10px 16px;border-bottom:5px solid #a8d98d;position:relative;overflow:hidden}h1{margin:0;color:#18845c;font-size:clamp(24px,5vw,40px)}.sub{font-weight:bold;color:#e76f51;margin-top:5px}
+.soundbar{display:flex;justify-content:center;align-items:center;gap:7px;margin:0 auto 9px;position:relative;z-index:2}
+.soundbar button{font-size:12px;padding:6px 10px;border-radius:999px;box-shadow:0 2px 0 #9acde1}
+.soundbar button.main{font-size:12px;box-shadow:0 2px 0 #d5a52e}
+.decor{position:fixed;z-index:0;pointer-events:none;font-size:30px;opacity:.72;animation:floaty 5s ease-in-out infinite}
+.decor.d1{top:23%;left:2%}.decor.d2{top:55%;right:2%;animation-delay:1s}.decor.d3{bottom:9%;left:5%;animation-delay:2s}.decor.d4{top:75%;right:8%;animation-delay:2.8s}
+@keyframes floaty{0%,100%{transform:translateY(0) rotate(-8deg)}50%{transform:translateY(-22px) rotate(12deg)}}
+main{position:relative;z-index:1}
+.card{position:relative;overflow:hidden}
+.card:before{content:"✨";position:absolute;top:8px;right:15px;font-size:24px;animation:twinkle 1.8s infinite}
+@keyframes twinkle{0%,100%{opacity:.35;transform:scale(.8)}50%{opacity:1;transform:scale(1.2)}}
+.emoji{animation:bob 2.8s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+main{max-width:760px;margin:20px auto;padding:0 12px}.card{background:#fff;border:5px solid #fff;border-radius:26px;box-shadow:0 7px 0 #b8d99c;padding:clamp(18px,4vw,30px);text-align:center}
+.hidden{display:none!important}.emoji{font-size:clamp(100px,25vw,170px);line-height:1.2;margin:12px}.hint{font-size:18px;font-weight:bold}
+.choices{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:20px 0}
+button{border:0;border-radius:18px;padding:16px 8px;font-size:clamp(22px,5vw,32px);font-weight:900;background:#e4f5ff;color:#15536e;box-shadow:0 5px 0 #9acde1;cursor:pointer}
+button:active{transform:translateY(3px);box-shadow:0 2px 0 #9acde1}button.main{background:#ffd45e;color:#674900;box-shadow:0 5px 0 #d5a52e;font-size:20px}
+button:disabled{opacity:.7;cursor:default}.top{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-weight:bold}.pill{background:#e9f7dd;border-radius:20px;padding:8px 14px}
+.feedback{font-size:23px;font-weight:900;min-height:34px;margin:12px}.next{font-size:18px;background:#83d7a5;color:#155537;box-shadow:0 5px 0 #4ca878}
+.small{font-size:14px;color:#65806d}input{font-size:18px;padding:12px;border:3px solid #9ed7a5;border-radius:12px;width:min(100%,330px);text-align:center}
+#certificate{margin-top:22px;position:relative;border:3px solid #b89448;outline:1px solid #e5d4a8;outline-offset:-10px;border-radius:8px;padding:clamp(22px,5vw,42px);background:radial-gradient(circle at top left,#fffdf4,#f7f0df 70%);color:#26344a;box-shadow:inset 0 0 0 7px #fffaf0}
+#certificate:before,#certificate:after{content:"✦";position:absolute;color:#b89448;font-size:25px}
+#certificate:before{top:14px;left:18px}#certificate:after{bottom:14px;right:18px}
+.cert-title{font-family:Georgia,serif;font-size:clamp(25px,6vw,38px);letter-spacing:2px;color:#263b5a;margin:12px 0}
+.cert-name{font-family:Georgia,serif;font-size:clamp(27px,7vw,42px);color:#9a7131;font-weight:700;overflow-wrap:anywhere;border-bottom:1px solid #c6a96a;display:inline-block;padding:0 18px 8px}
+.cert-rule{width:72%;height:1px;background:#c6a96a;margin:14px auto}
+.cert-subtitle{font-family:Georgia,serif;letter-spacing:1px;font-weight:bold;color:#344b68}
+.cert-seal{font-size:34px;color:#a9853d}
+.nail-art{width:clamp(120px,35vw,190px);height:clamp(110px,32vw,170px);vertical-align:middle;filter:drop-shadow(0 5px 4px #9aa8b5)}
+@media(max-width:480px){.choices{grid-template-columns:1fr}.choices button{padding:12px}}
+.end-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:14px auto 2px}
+.end-actions button{font-size:13px;padding:9px 12px;border-radius:12px;box-shadow:0 3px 0 #9acde1;flex:0 1 auto}
+.end-actions button.main{font-size:13px;box-shadow:0 3px 0 #d5a52e}
+@media(max-width:480px){.end-actions{gap:6px}.end-actions button{font-size:11px;padding:8px 9px}}
+@media print{body{background:white!important}header,#home,#quiz,#done>h2,#done>.emoji,#done>p,#done>.resultline,#done>.action{display:none!important}main{margin:0;padding:0;max-width:none}#done{display:block!important;border:0!important;box-shadow:none!important;padding:0!important}#certificate{display:block!important;border:9px double #d6a72c!important;min-height:95vh;display:flex!important;flex-direction:column;justify-content:center;page-break-inside:avoid}}
+</style></head>
+<body>
+<header>
+<div class="soundbar">
+<button onclick="testVoice()">🔊 UJI SUARA</button>
+<button class="main" id="soundToggle" onclick="toggleSound()">SUARA: ON</button>
+</div>
+<h1>🔎 CARI PERKATAAN BETUL!</h1><div class="sub">Permainan Kenal Perkataan • TICE AMIE</div></header>
+<div class="decor d1">🦋</div><div class="decor d2">🌼</div><div class="decor d3">⭐</div><div class="decor d4">🐝</div>
+<main>
+<section id="home" class="card">
+<div class="emoji">🧒🏻 🔍 📚</div><h2>Jom Cari Perkataan!</h2>
+<p>Lihat gambar. Kemudian pilih perkataan yang betul.</p>
+<p><b>50 soalan bergambar</b><p>🌱 Tahap 1: Mudah (20 soalan)<br>🌼 Tahap 2: Sederhana (20 soalan)<br>🏆 Tahap 3: Mencabar (10 soalan)</p></p>
+<input id="playerName" maxlength="28" placeholder="Taip nama murid di sini">
+<br><button class="main start-button" onclick="enableSoundAndStart()">MULA BERMAIN ▶</button>
+<p class="small">Tekan UJI SUARA di bahagian atas untuk mencuba suara.</p>
+<p class="small">Sesuai untuk murid yang sedang belajar membaca.</p>
+</section>
+<section id="quiz" class="card hidden">
+<div class="top"><span class="pill" id="count">Soalan 1 / 50</span><span class="pill" id="level">🌱 Tahap 1: Mudah</span><span class="pill" id="points">⭐ 0</span></div>
+<div class="emoji" id="picture">👕</div><div class="hint">Apakah nama gambar ini?</div>
+<div class="choices" id="choices"></div><div class="feedback" id="feedback" aria-live="polite"></div>
+<button id="next" class="next hidden" onclick="advance()">SETERUSNYA ➜</button>
+</section>
+<section id="levelDone" class="card hidden">
+<div class="emoji">🏆 🌟 🎉</div>
+<h2 id="levelTitle">TAHNIAH!</h2>
+<p id="levelMessage" style="font-size:22px;font-weight:900;color:#16845c">Tahniah, awak layak ke tahap 2!</p>
+<p id="levelScore" class="hint"></p>
+<button class="main start-button" onclick="continueLevel()">TERUSKAN ➜</button>
+</section>
+<section id="done" class="card hidden">
+<div class="emoji">🏆 🎉 🌟</div><h2>TAHNIAH!</h2>
+<p id="doneName" class="resultline">Awak sudah selesai bermain.</p><h2 id="result" class="resultline">50 / 50 ⭐</h2>
+<div id="certificate">
+<div class="cert-seal">✦ TICE AMIE ✦</div>
+<div class="cert-title">SIJIL PENCAPAIAN</div>
+<div class="cert-rule"></div>
+<p>Dengan sukacitanya dianugerahkan kepada</p>
+<div id="certName" class="cert-name">NAMA MURID</div>
+<p>sebagai penghargaan atas usaha menamatkan permainan</p>
+<div class="cert-subtitle">CARI PERKATAAN BERPANDUKAN GAMBAR</div>
+<p id="certScore" style="font-weight:bold;font-size:20px;color:#9a7131"></p>
+<div class="cert-rule"></div>
+<p>Teruskan usaha dan semangat membaca.<br><b>Setiap langkah membawa kejayaan.</b></p>
+<div style="margin-top:22px;font-family:Georgia,serif;color:#263b5a"><b>TEACHER AMIE</b><br><span class="small">PENGANJUR • TICE AMIE</span></div>
+<div class="cert-seal" style="margin-top:12px">✧ ❖ ✧</div>
+</div>
+<div class="action end-actions">
+<button class="main" onclick="window.print()">🖨️ CETAK / SIMPAN SIJIL PDF</button>
+<button onclick="speak('Tahniah '+player+'. Ini sijil pencapaian awak!')">🔊 DENGAR UCAPAN TAHNIAH</button>
+<button onclick="start()">MAIN LAGI ↻</button>
+</div>
+</section>
+</main>
+<script>
+const data=[
+ {pic:"👕",answer:"BAJU",options:["BATU","BAJU","DAJU"]},
+ {pic:"🪨",answer:"BATU",options:["DADU","BATA","BATU"]},
+ {pic:"🔥",answer:"API",options:["ABI","ADI","API"]},
+ {pic:"⚽",answer:"BOLA",options:["BOLA","BELA","DOLA"]},
+ {pic:"📘",answer:"BUKU",options:["BUKU","BUBU","DUKU"]},
+ {pic:"👀",answer:"MATA",options:["MAMA","MATA","NATA"]},
+ {pic:"🦶",answer:"KAKI",options:["KAKU","KAKI","KAKO"]},
+ {pic:"🎩",answer:"TOPI",options:["TAPI","TOPI","DOPI"]},
+ {pic:"🍞",answer:"ROTI",options:["ROTI","ROKI","RODI"]},
+ {pic:"🥛",answer:"SUSU",options:["SUSI","SUSU","SUSO"]},
+ {pic:"🦷",answer:"GIGI",options:["GIGI","GIGU","DIDI"]},
+ {pic:"🍚",answer:"NASI",options:["NAPI","NASI","NATI"]},
+ {pic:'<svg class="nail-art" viewBox="0 0 220 180" role="img" aria-label="Gambar sebatang paku"><g transform="rotate(-32 110 90)"><rect x="101" y="43" width="18" height="105" rx="7" fill="#aeb8c2" stroke="#64748b" stroke-width="4"/><path d="M96 48 Q110 24 124 48 L124 57 L96 57Z" fill="#64748b" stroke="#475569" stroke-width="3"/><path d="M101 140 L110 166 L119 140Z" fill="#64748b"/><path d="M105 65 L105 133" stroke="#eef2f6" stroke-width="3" stroke-linecap="round"/></g><path d="M45 145 Q110 170 175 145" fill="none" stroke="#d6e7f3" stroke-width="5" stroke-linecap="round"/></svg>',answer:"PAKU",options:["PAKU","PAGU","BAKU"]},
+ {pic:"🏺",answer:"PASU",options:["PASA","BASU","PASU"]},
+ {pic:"🐎",answer:"KUDA",options:["KUTA","KUDA","GURA"]},
+ {pic:"🦌",answer:"RUSA",options:["RUSA","RASA","LUSA"]},
+ {pic:"🧹",answer:"SAPU",options:["SAPI","SAPU","SABU"]},
+ {pic:"😊",answer:"PIPI",options:["PIPI","PIPU","BIBI"]},
+ {pic:"☝️",answer:"JARI",options:["JARI","JATI","DARI"]},
+ {pic:"🧼",answer:"CUCI",options:["CICI","CUCI","CUDI"]},
+ {pic:"💅",answer:"KUKU",options:["KUKI","KUKU","GUGU"]},
+ {pic:"🎲",answer:"DADU",options:["DADU","DADA","TADU"]},
+ {pic:"🗺️",answer:"PETA",options:["PITA","PETA","PIDA"]},
+ {pic:"🚚",answer:"LORI",options:["LORI","LARI","ROLI"]},
+ {pic:"🪢",answer:"TALI",options:["TALI","TARI","DALI"]}
+
+ ,{pic:"🚗",answer:"KERETA",options:["KERETA","KELERA","KETERA"]}
+ ,{pic:"🏫",answer:"SEKOLAH",options:["SEKOLAH","SEKOLAHH","SEKOLAT"]}
+ ,{pic:"🥥",answer:"KELAPA",options:["KELAPA","KELAMA","KELARA"]}
+ ,{pic:"🍌",answer:"PISANG",options:["PISANG","PISAN","PISANGG"]}
+ ,{pic:"🐘",answer:"GAJAH",options:["GAJAH","GAJAT","KAJAH"]}
+ ,{pic:"🐱",answer:"KUCING",options:["KUCING","KUCIN","KUTING"]}
+ ,{pic:"🐓",answer:"AYAM",options:["AYAM","AYAN","AYAMM"]}
+ ,{pic:"🌳",answer:"POKOK",options:["POKOK","POKOT","POKOKK"]}
+ ,{pic:"🌸",answer:"BUNGA",options:["BUNGA","BUNGAH","BUNKA"]}
+ ,{pic:"🪟",answer:"TINGKAP",options:["TINGKAP","TINGKAT","TINGKAM"]}
+ ,{pic:"🚲",answer:"BASIKAL",options:["BASIKAL","BASIKAN","BASIKAR"]}
+ ,{pic:"🍉",answer:"TEMBIKAI",options:["TEMBIKAI","TEMBIKAIH","TEMBIRAI"]}
+ ,{pic:"🐢",answer:"KURA-KURA",options:["KURA-KURA","KURA-KURA'","KURA-KULA"]}
+ ,{pic:"🦋",answer:"RAMA-RAMA",options:["RAMA-RAMA","RAMA-RANA","RAMA-LAMA"]}
+ ,{pic:"🛏️",answer:"KATIL",options:["KATIL","KATIR","KATIN"]}
+ ,{pic:"🧺",answer:"BAKUL",options:["BAKUL","BAKUR","BAKUN"]}
+ ,{pic:"🧊",answer:"AISKRIM",options:["AISKRIM","AISKRIN","AISKRUM"]}
+ ,{pic:"🌧️",answer:"HUJAN",options:["HUJAN","HUJAM","HUJAT"]}
+ ,{pic:"🌞",answer:"MATAHARI",options:["MATAHARI","MATAHARIH","MATAHARIU"]}
+ ,{pic:"🏖️",answer:"PANTAI",options:["PANTAI","PANTAIH","PANTAIK"]}
+ ,{pic:"🦒",answer:"ZIRAFAH",options:["ZIRAFAH","ZIRAFAT","SIRAFAH"]}
+ ,{pic:"🐊",answer:"BUAYA",options:["BUAYA","BUALA","BUAYAQ"]}
+ ,{pic:"🦜",answer:"BURUNG",options:["BURUNG","BURUN","BURUNJ"]}
+ ,{pic:"🍍",answer:"NANAS",options:["NANAS","NANAT","NANASU"]}
+ ,{pic:"🪥",answer:"BERUS GIGI",options:["BERUS GIGI","BERUS GIGU","BERUS GIGI?"]}
+];
+let n=0,score=0,locked=false,player="Murid",soundOn=true;
+const $=x=>document.getElementById(x);
+function speak(t){
+  if(!soundOn || !("speechSynthesis" in window)) return;
+  try{
+    const synth=window.speechSynthesis;
+    synth.cancel();
+    const u=new SpeechSynthesisUtterance(t);
+    u.lang="ms-MY"; u.rate=0.88; u.pitch=1.05; u.volume=1;
+    const voices=synth.getVoices();
+    const ms=voices.find(v=>/^ms(-|_)/i.test(v.lang)) || voices.find(v=>/Malay|Bahasa Melayu/i.test(v.name));
+    if(ms) u.voice=ms;
+    synth.resume();
+    synth.speak(u);
+  }catch(e){}
+}
+function testVoice(){
+  if(!soundOn){soundOn=true;$("soundToggle").textContent="SUARA: ON";}
+  speak("Hai! Selamat datang. Jom cari perkataan yang betul. Awak hebat!");
+}
+function toggleSound(){
+  soundOn=!soundOn;
+  $("soundToggle").textContent=soundOn?"SUARA: ON":"SUARA: OFF";
+  if(!soundOn && "speechSynthesis" in window) window.speechSynthesis.cancel();
+  if(soundOn) speak("Suara sudah dibuka.");
+}
+function enableSoundAndStart(){
+  try{ const C=window.AudioContext||window.webkitAudioContext; if(C){const c=new C();c.resume().then(()=>c.close());} }catch(e){}
+  start();
+}
+function victorySound(){
+ if(!soundOn)return;
+ try{
+  const C=window.AudioContext||window.webkitAudioContext;if(!C)return;
+  const ctx=new C();const now=ctx.currentTime;
+  // Sorakan kemenangan "Yeay!" melalui suara peranti dan muzik kemenangan ringkas.
+  const notes=[523.25,659.25,783.99,1046.5,783.99,1046.5];
+  notes.forEach((f,i)=>{const o=ctx.createOscillator(),g=ctx.createGain();o.type="triangle";o.frequency.value=f;g.gain.setValueAtTime(.0001,now+i*.14);g.gain.exponentialRampToValueAtTime(.16,now+i*.14+.025);g.gain.exponentialRampToValueAtTime(.0001,now+i*.14+.19);o.connect(g);g.connect(ctx.destination);o.start(now+i*.14);o.stop(now+i*.14+.21)});
+  setTimeout(()=>ctx.close(),1500);
+ }catch(e){}
+}
+function show(id){["home","quiz","levelDone","done"].forEach(x=>$(x).classList.toggle("hidden",x!==id))}
+function start(){player=$("playerName").value.trim()||"Murid";n=0;score=0;show("quiz");draw();speak("Jom cari perkataan yang betul, "+player+"!")}
+function draw(){locked=false;let q=data[n];$("count").textContent=`Soalan ${n+1} / ${data.length}`;
+$("level").textContent=n<20?"🌱 Tahap 1: Mudah":n<40?"🌼 Tahap 2: Sederhana":"🏆 Tahap 3: Mencabar";
+$("points").textContent=`⭐ ${score}`;$("picture").innerHTML=q.pic;$("feedback").textContent="";$("next").classList.add("hidden");$("choices").innerHTML="";
+q.options.forEach(w=>{let b=document.createElement("button");b.textContent=w.toLocaleLowerCase("ms-MY");b.onclick=()=>choose(w.toLocaleLowerCase("ms-MY"),b);$("choices").appendChild(b)});}
+function choose(w,btn){if(locked)return;locked=true;let q=data[n];if(w===q.answer.toLocaleLowerCase("ms-MY")){score++;const praise=Math.random()<.5?"🌟 Awak hebat!":"🎉 Bagus! Awak memang pandai!";$("feedback").textContent=praise;$("feedback").style.color="#16845c";speak(praise.replace("🌟 ","").replace("🎉 ",""));}else{$("feedback").textContent="😊 Belum tepat. Jawapan yang betul ialah "+q.answer.toLocaleLowerCase("ms-MY")+"."; $("feedback").style.color="#d65b65";speak("Belum tepat. Jawapan yang betul ialah "+q.answer.toLocaleLowerCase("ms-MY")+".");}
+$("points").textContent=`⭐ ${score}`;[...$("choices").children].forEach(b=>{b.disabled=true;if(b.textContent===q.answer.toLocaleLowerCase("ms-MY"))b.style.background="#baf0ca";else if(b===btn)b.style.background="#ffd0d0"});$("next").classList.remove("hidden");$("next").textContent=n===data.length-1?"TAMATKAN PERMAINAN 🏆":"SETERUSNYA ➜";}
+function advance(){
+ n++;
+ if(n===20 || n===40){
+   const nextStage=n===20?2:3;
+   show("levelDone");
+   $("levelTitle").textContent="TAHNIAH!";
+   $("levelMessage").textContent="Tahniah, awak layak ke tahap "+nextStage+"!";
+   $("levelScore").textContent="Markah terkumpul: "+score+" / "+n+" ⭐";
+   speak("Tahniah, awak layak ke tahap "+nextStage+"!");
+   victorySound();
+   return;
+ }
+ if(n>=data.length){
+   show("done");$("doneName").textContent="Syabas, "+player+"! Awak sudah selesai bermain.";$("result").textContent=score+" / "+data.length+" ⭐";$("certName").textContent=player;$("certScore").textContent="Markah: "+score+" daripada "+data.length+" soalan";speak("Yeay! Tahniah "+player+"! Awak berjaya menamatkan permainan. Sijil pencapaian awak sudah tersedia.");setTimeout(victorySound,700)
+ } else draw();
+}
+function continueLevel(){show("quiz");draw();speak("Jom teruskan ke tahap "+(n<40?"dua":"tiga")+", "+player+"!");}
+</script></body></html>
