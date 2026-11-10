@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="ms"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Sijil Penyertaan Ibu Bapa Tice Amie</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#fff4fb;font-family:"Trebuchet MS",Arial,sans-serif;color:#29336f}
+.panel{max-width:850px;margin:18px auto;padding:20px;background:#fff;border-radius:20px;box-shadow:0 7px 24px #8e5ba51c}
+.panel h1{margin:0 0 8px;color:#5738a0}.panel p{color:#62677b;line-height:1.5}label{display:block;font-weight:800;margin:12px 0 6px}
+input{width:100%;padding:14px;border:2px solid #d9c9ff;border-radius:12px;font-size:18px}
+.buttons{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}button{padding:13px 18px;border:0;border-radius:12px;font-weight:800;font-size:16px}
+.print{background:#6543b7;color:white}.clear{background:#fff0a9;color:#4a3a75}
+.wrap{max-width:1100px;margin:18px auto;padding:0 12px}
+.cert{position:relative;width:100%;aspect-ratio:297/210;overflow:hidden;background:linear-gradient(135deg,#fff9cf 0%,#ffe8f4 36%,#e5f7ff 70%,#edffdf 100%);border:12px solid transparent;border-image:linear-gradient(90deg,#ff75aa,#ffc94d,#7bd8cf,#a58aff,#ff75aa) 1;box-shadow:0 7px 25px #43345a2a}
+.cert:before{content:"";position:absolute;inset:11px;border:3px dashed #fff;border-radius:16px;pointer-events:none}
+.ribbon{position:absolute;top:3%;left:50%;transform:translateX(-50%);background:#fff;border:2px solid #ffb4d1;border-radius:30px;padding:.8% 4%;font-size:clamp(8px,1.15vw,14px);font-weight:900;color:#6945b3;white-space:nowrap}
+.brand,.heading,.intro,.label,.name,.bodycopy,.date,.sign,.role{position:absolute;left:5%;width:90%;text-align:center}
+.brand{top:12%;font-size:clamp(8px,1.25vw,15px);letter-spacing:1.2px;font-weight:900;color:#4c73bd}
+.heading{top:19%;font-size:clamp(21px,3.7vw,45px);font-weight:1000;color:#5635a0;text-shadow:2px 2px 0 #fff,3px 3px 0 #ffc6df}
+.intro{top:34%;font-size:clamp(9px,1.35vw,16px);font-weight:700;color:#3d4b82}
+.label{top:40%;font-size:clamp(8px,1.15vw,14px);font-weight:900;color:#e34f91}
+.name{top:44%;left:13%;width:74%;height:10%;display:flex;align-items:center;justify-content:center;text-align:center;border:2px solid #a58aff;border-radius:16px;background:#ffffffdf;font:bold clamp(14px,2.25vw,27px) "Trebuchet MS",Arial,sans-serif;color:#293b82;white-space:nowrap;overflow:hidden;text-overflow:clip;padding:0 10px;line-height:1.05}
+.bodycopy{top:57%;font-size:clamp(9px,1.3vw,16px);line-height:1.25;font-weight:700;color:#384477}
+.program{display:block;margin-top:3px;font-size:clamp(16px,2.45vw,29px);line-height:1.12;font-weight:1000;color:#e94f91}
+.date{top:81%;font-size:clamp(8px,1.1vw,13px);font-weight:900;color:#4d55a3;background:#fffdf0;border:1.5px solid #f3c75b;border-radius:25px;padding:.5% 0}
+.date .dan{color:#e94f91;padding:0 5px}.sign{top:89%;font:italic clamp(14px,1.8vw,21px) Georgia,serif;color:#543a9b}
+.role{top:96%;font-size:clamp(7px,.9vw,11px);font-weight:900;color:#52608b}
+.deco{position:absolute;font-size:clamp(18px,3.2vw,38px);filter:drop-shadow(1px 2px 0 #fff)}
+.d1{left:3%;top:27%}.d2{right:3%;top:26%}.d3{left:4%;bottom:5%}.d4{right:4%;bottom:5%}
+@page{size:A4 landscape;margin:0}
+@media print{body{background:white}.panel{display:none}.wrap{width:297mm;height:210mm;margin:0;padding:0;max-width:none}.cert{width:297mm;height:210mm;aspect-ratio:auto;box-shadow:none;print-color-adjust:exact;-webkit-print-color-adjust:exact}}
+</style></head><body>
+<section class="panel"><h1>🌈 Sijil Penyertaan Ibu Bapa</h1><p>Isi nama ibu atau bapa sahaja. Nama akan dipaparkan kemas di tengah sijil.</p>
+<label for="parent">Nama ibu / bapa</label><input id="parent" placeholder="Contoh: Nur Syamilah binti Mat Isa" autocomplete="name">
+<div class="buttons"><button class="print" onclick="window.print()">Cetak / Simpan PDF</button><button class="clear" onclick="document.getElementById('parent').value='';update()">Kosongkan</button></div></section>
+<div class="wrap"><div class="cert">
+<div class="ribbon">⭐ ILMU • KASIH SAYANG • KEJAYAAN ⭐</div>
+<div class="deco d1">🌈</div><div class="deco d2">🎈</div><div class="deco d3">📚</div><div class="deco d4">🌟</div>
+<div class="brand">TICE AMIE • BENGKEL ILMU & PEMBELAJARAN</div>
+<div class="heading">SIJIL PENYERTAAN</div>
+<div class="intro">Dengan penuh penghargaan diberikan kepada</div>
+<div class="label">IBU BAPA / PENJAGA</div>
+<div class="name" id="shown">NAMA IBU / BAPA</div>
+<div class="bodycopy">atas kesudian menyertai<br><span class="program">Bengkel Asas Bacaan KV<br>Tice Amie</span></div>
+<div class="date">📅 1 NOVEMBER 2026 <span class="dan">DAN</span> 7 NOVEMBER 2026</div>
+<div class="sign">Tice Amie</div><div class="role">PENGANJUR / PENGASAS BENGKEL</div>
+</div></div>
+<script>
+const input=document.getElementById('parent');
+const shown=document.getElementById('shown');
+function fitName(){
+  const name=input.value.trim()||'NAMA IBU / BAPA';
+  shown.textContent=name;
+  const style=getComputedStyle(shown);
+  const canvas=document.createElement('canvas');
+  const ctx=canvas.getContext('2d');
+  const maxSize=Math.min(27,Math.max(14,window.innerWidth*0.0225));
+  const minSize=10;
+  const available=shown.clientWidth-20;
+  let size=maxSize;
+  ctx.font='bold '+size+'px Trebuchet MS, Arial, sans-serif';
+  while(size>minSize && ctx.measureText(name).width>available){
+    size-=0.5;
+    ctx.font='bold '+size+'px Trebuchet MS, Arial, sans-serif';
+  }
+  shown.style.fontSize=size+'px';
+}
+function update(){fitName();}
+input.addEventListener('input',update);
+window.addEventListener('resize',fitName);
+fitName();
+</script>
+</body></html>
