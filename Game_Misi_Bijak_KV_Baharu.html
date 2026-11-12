@@ -1,0 +1,70 @@
+<!doctype html><html lang="ms"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#6c4bd4"><title>Misi Bijak KV - Tice Amie</title>
+<style>
+:root{--p:#6c4bd4;--ink:#34304a;--green:#28a879}*{box-sizing:border-box}body{margin:0;padding:14px;background:linear-gradient(135deg,#e8f7ff,#fff1f7 55%,#fff8d9);font-family:Arial,sans-serif;color:var(--ink)}.wrap{max-width:760px;margin:auto}header{text-align:center;padding:10px}.logo{display:inline-block;background:white;border-radius:18px;padding:8px 18px;color:var(--p);font-weight:900;letter-spacing:2px}h1{font-size:clamp(30px,7vw,48px);color:var(--p);margin:12px 0 5px}.sub{font-weight:bold;color:#716b87}.card{background:#ffffffed;border:3px solid white;border-radius:24px;padding:clamp(18px,4vw,30px);box-shadow:0 12px 30px #58468b18;margin:8px auto}.hidden{display:none!important}.center{text-align:center}.hero{font-size:clamp(48px,13vw,82px)}h2{color:var(--p)}label{display:block;font-weight:bold;margin:14px 0 6px}input{width:100%;padding:15px;border:2px solid #ddd6f5;border-radius:14px;font-size:18px}button{font:inherit;cursor:pointer;touch-action:manipulation}.btn{padding:15px 20px;border:0;border-radius:16px;font-weight:900;font-size:18px}.primary{background:var(--p);color:white}.full{width:100%;margin-top:18px}.note{font-size:14px;color:#77718b}.top{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}.pill{background:#f1edff;color:var(--p);padding:8px 12px;border-radius:99px;font-weight:900;font-size:14px}.progress{height:12px;background:#eee9fa;border-radius:99px;overflow:hidden;margin:17px 0 22px}.bar{height:100%;background:linear-gradient(90deg,#ff78a8,var(--p));width:0;transition:width .2s}.prompt{text-align:center;font-size:clamp(21px,5vw,28px);font-weight:900;margin:18px 0}.picture{text-align:center;font-size:clamp(64px,18vw,110px);margin:10px}.options{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}.option{min-height:76px;border:3px solid #e6e0f6;border-radius:18px;background:white;font-size:clamp(21px,5vw,28px);font-weight:900;padding:10px 4px;box-shadow:0 4px 0 #e9e3f5;color:var(--ink)}.option.correct{border-color:var(--green);background:#e9fbf3;color:#167d59}.option.wrong{border-color:#ed7891;background:#fff0f3;color:#b83d5d}.option:disabled{cursor:default}.feedback{min-height:48px;text-align:center;font-size:18px;font-weight:900;margin:18px 0 4px}.actions{display:flex;gap:10px;flex-wrap:wrap}.actions .btn{flex:1;min-width:145px}.voice{background:#fff0c7;color:#76500b}.retry{background:#ffedf2;color:#b83d5d}.good{color:#16865e}.bad{color:#c64d69}.next{display:none}.next.show{display:block}.finish-score{font-size:clamp(55px,14vw,82px);font-weight:1000;color:var(--p)}.result-stars{font-size:32px;letter-spacing:3px}footer{text-align:center;font-size:12px;color:#89839c;padding:18px}@media(max-width:430px){body{padding:9px}.options{gap:8px}.option{min-height:68px;font-size:21px}.card{border-radius:20px}}
+@media print{
+ body{background:white;padding:0}
+ body *{visibility:hidden!important}
+ #certificate,#certificate *{visibility:visible!important}
+ #certificate{display:block!important;position:absolute;left:0;top:0;width:100%;margin:0;border:0;box-shadow:none;min-height:100vh}
+ .no-print{display:none!important}
+}
+.certificate{display:none;background:#fffdf5;border:10px double #d6a938;border-radius:8px;padding:34px 24px;text-align:center;color:#39304d;margin:22px 0}
+.certificate h2{font-size:clamp(27px,6vw,42px);color:#6744c4;margin:8px 0}
+.certificate .cert-name{font-size:clamp(25px,6vw,38px);font-weight:900;color:#b17b16;border-bottom:2px solid #d6a938;display:inline-block;padding:8px 18px;margin:12px 0}
+.certificate .cert-score{font-size:24px;font-weight:900;color:#6744c4}
+.certificate .cert-footer{display:flex;justify-content:space-around;gap:16px;margin-top:35px;font-size:13px}
+@media print{.certificate{display:block!important}}
+</style></head><body><main class="wrap"><header><div class="logo">TICE AMIE</div><h1>🌈 MISI BIJAK KV 🌈</h1><div class="sub">Misi membaca bermula!</div></header>
+<section class="card" id="start"><div class="center"><div class="hero">📚🦊⭐</div><h2>Hai, adik-adik!</h2><p>Jom baca suku kata dan kumpul bintang. Jawab 20 soalan dengan gembira!</p></div><label for="student">Nama murid</label><input id="student" maxlength="40" placeholder="Taip nama di sini"><button class="btn primary full" id="startBtn">MULA BERMAIN 🚀</button><p class="note center">Jika tersalah, jangan risau. Cuba pilihan lain sehingga betul!</p></section>
+<section class="card hidden" id="game"><div class="top"><span class="pill" id="number"></span><span class="pill" id="stars">⭐ 0</span></div><div class="progress"><div class="bar" id="bar"></div></div><div class="center"><span class="pill" id="section"></span></div><div class="prompt" id="prompt"></div><div class="picture" id="picture"></div><div class="options" id="options"></div><div class="feedback" id="feedback" aria-live="polite"></div><div class="actions"><button class="btn voice hidden" id="voiceBtn" type="button">🔊 DENGAR SUARA</button><button class="btn retry hidden" id="retryBtn" type="button">🔄 CUBA LAGI</button></div><button class="btn primary full next" id="nextBtn">SOALAN SETERUSNYA ➜</button></section>
+<section class="card hidden center" id="result"><div class="hero">🏆🎉</div><h2>Tahniah, <span id="resultName"></span>!</h2><p>Adik sudah menyelesaikan Misi Bijak KV.</p><div class="finish-score" id="finalScore"></div><div class="result-stars" id="finalStars"></div><p id="message"></p>
+<div class="certificate" id="certificate">
+  <div style="font-size:42px">🏆 ⭐ 🌈</div>
+  <div style="font-weight:900;letter-spacing:3px;color:#6744c4">TICE AMIE</div>
+  <h2>SIJIL PENCAPAIAN</h2>
+  <p>Dengan sukacitanya dianugerahkan kepada</p>
+  <div class="cert-name" id="certName">Nama Murid</div>
+  <p>kerana telah menyelesaikan permainan pendidikan</p>
+  <h2>MISI BIJAK KV</h2>
+  <p>dan menunjukkan usaha serta semangat dalam pembelajaran Bahasa Melayu.</p>
+  <div class="cert-score" id="certScore">Markah: 20 / 20</div>
+  <div class="cert-footer"><div>Tarikh<br><strong id="certDate"></strong></div><div>Pengiktirafan<br><strong>TICE AMIE</strong></div></div>
+  <div style="margin-top:24px;font-size:13px;color:#8a6a22">Teruskan usaha. Anda hebat!</div>
+</div>
+<button class="btn primary full no-print" id="printBtn">CETAK / SIMPAN SIJIL PDF 🖨️</button>
+<button class="btn primary full no-print" id="restartBtn">MAIN SEMULA 🔄</button></section><footer>© Tice Amie · Misi Bijak KV</footer></main>
+<script>
+const Q=[
+["KENALI KV","Pilih suku kata ba.","🔤",["bi","ba","bu"],1],
+["KENALI KV","Pilih suku kata ku.","🔤",["ku","ka","ki"],0],
+["KENALI KV","Pilih suku kata ma.","🔤",["mi","mu","ma"],2],
+["KENALI KV","Pilih suku kata sa.","🔤",["su","sa","si"],1],
+["KENALI KV","Pilih suku kata to.","🔤",["ta","tu","to"],2],
+["MISI CARI VOKAL","Apakah bunyi awal perkataan ikan?","🐟",["i","e","ie"],0],
+["MISI CARI SUKU KATA","Pilih suku kata awal bagi perkataan kucing.","🐱",["ku","cu","ci"],0],
+["MISI CARI SUKU KATA","Pilih suku kata awal bagi perkataan pisang.","🍌",["pa","pi","pu"],1],
+["MISI CARI SUKU KATA","Pilih suku kata awal bagi perkataan bola.","⚽",["bo","ba","bu"],0],
+["MISI CARI SUKU KATA","Pilih suku kata awal bagi perkataan mata.","👀",["mi","ma","mu"],1],
+["MISI BACA KV + KV","Apakah nama gambar ini?","👕",["batu","baju","baja"],1],
+["MISI BACA KV + KV","Apakah nama gambar ini?","📘",["buku","bola","bubu"],0],
+["MISI BACA KV + KV","Apakah nama gambar ini?","🦶",["kuda","kaki","kuku"],1],
+["MISI BACA KV + KV","Apakah nama gambar ini?","🎩",["tapi","topi","tipi"],1],
+["MISI BACA KV + KV","Apakah nama gambar ini?","🥛",["susu","sasi","sasa"],0],
+["CABARAN PERKATAAN","ba + □ = baju. Pilih suku kata yang betul.","👕",["ju","ji","ja"],0],
+["CABARAN PERKATAAN","bo + □ = bola. Pilih suku kata yang betul.","⚽",["li","la","lu"],1],
+["CABARAN PERKATAAN","ma + □ = mata. Pilih suku kata yang betul.","👀",["ta","ti","tu"],0],
+["CABARAN PERKATAAN","na + □ = nasi. Pilih suku kata yang betul.","🍚",["su","si","sa"],1],
+["CABARAN PERKATAAN","ku + □ = kuda. Pilih suku kata yang betul.","🐴",["di","da","du"],1]
+];
+let n=0,score=0,locked=false,name="";const el=id=>document.getElementById(id);
+function start(){name=el("student").value.trim()||"Adik";n=0;score=0;el("start").classList.add("hidden");el("result").classList.add("hidden");el("game").classList.remove("hidden");show()}
+let lastVoice="Awak bijak!";
+function speak(message){lastVoice=message;el("voiceBtn").classList.remove("hidden");if("speechSynthesis" in window){window.speechSynthesis.cancel();let utterance=new SpeechSynthesisUtterance(message);utterance.lang="ms-MY";utterance.rate=0.88;utterance.pitch=1.12;window.speechSynthesis.speak(utterance)}}
+function show(){locked=false;let q=Q[n];el("number").textContent=`SOALAN ${n+1} / 20`;el("stars").textContent=`⭐ ${score}`;el("bar").style.width=`${n/20*100}%`;el("section").textContent=q[0];el("prompt").textContent=q[1];el("picture").textContent=q[2];el("feedback").textContent="";el("feedback").className="feedback";el("nextBtn").classList.remove("show");el("voiceBtn").classList.add("hidden");el("retryBtn").classList.add("hidden");el("options").innerHTML="";q[3].forEach((v,i)=>{let b=document.createElement("button");b.className="option";b.textContent=String.fromCharCode(65+i)+". "+v;b.onclick=()=>answer(i,b);el("options").appendChild(b)})}
+function answer(i,b){if(locked||b.disabled)return;let q=Q[n];if(i===q[4]){locked=true;score++;b.classList.add("correct");el("feedback").textContent="🎉 Hebat! Awak bijak! Adik dapat 1 bintang!";el("feedback").classList.add("good");el("stars").textContent=`⭐ ${score}`;[...el("options").children].forEach(x=>{if(x!==b)x.disabled=true});el("nextBtn").textContent=n===19?"LIHAT KEPUTUSAN 🏆":"SOALAN SETERUSNYA ➜";el("nextBtn").classList.add("show");speak("Awak bijak! Tahniah!")}else{b.disabled=true;b.classList.add("wrong");el("feedback").textContent="🌷 Belum tepat. Cuba lagi sayang!";el("feedback").classList.add("bad");el("retryBtn").classList.remove("hidden");speak("Cuba lagi sayang.")}}
+function retry(){locked=false;[...el("options").children].forEach(x=>{x.disabled=false;x.classList.remove("wrong","correct")});el("feedback").textContent="Tak mengapa. Cuba pilih jawapan sekali lagi ya!";el("feedback").className="feedback";el("retryBtn").classList.add("hidden");el("voiceBtn").classList.add("hidden")}
+function next(){if(!locked)return;n++;if(n<20)show();else result()}
+function result(){el("game").classList.add("hidden");el("result").classList.remove("hidden");el("resultName").textContent=name;el("finalScore").textContent=score+" / 20";el("finalStars").textContent="⭐".repeat(Math.max(1,Math.round(score/4)));el("message").textContent=score===20?"Hebat! Semua jawapan betul. Adik memang bijak!":score>=15?"Syabas! Teruskan berlatih membaca.":"Bagus kerana sudah mencuba! Jom bermain lagi dan berlatih membaca.";
+el("certName").textContent=name;el("certScore").textContent="Markah: "+score+" / 20";el("certDate").textContent=new Date().toLocaleDateString("ms-MY");}
+el("startBtn").onclick=start;el("nextBtn").onclick=next;el("retryBtn").onclick=retry;el("voiceBtn").onclick=()=>speak(lastVoice);el("restartBtn").onclick=()=>{el("result").classList.add("hidden");el("start").classList.remove("hidden")};el("printBtn").onclick=()=>window.print();
+</script></body></html>
