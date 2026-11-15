@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Misi Matematik Cilik 1–100</title>
+<style>
+:root{--ink:#26334a;--pink:#ff7da8;--blue:#65c9e8;--yellow:#ffd66b;--green:#65c99b;--purple:#a88bea;--paper:#fffdf7}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Trebuchet MS",Arial,sans-serif;color:var(--ink);background:linear-gradient(135deg,#fff0f6,#eafaff 55%,#fff8df);min-height:100vh;padding:18px}
+.wrap{max-width:760px;margin:0 auto}
+header{text-align:center;padding:10px 8px 18px}
+.logo{font-size:clamp(2.3rem,8vw,4.4rem);filter:drop-shadow(0 4px 0 #fff)}
+h1{font-size:clamp(1.7rem,5vw,2.6rem);margin:4px 0;color:#5b57a6}
+.sub{font-size:1rem;color:#65718a}
+.panel{background:#ffffffed;border:3px solid #fff;border-radius:28px;padding:clamp(18px,4vw,30px);box-shadow:0 12px 30px #66779922}
+.center{text-align:center}
+button{font:inherit;font-weight:800;border:0;border-radius:18px;padding:14px 20px;cursor:pointer;transition:.15s;box-shadow:0 4px 0 #26334a20}
+button:active{transform:translateY(3px);box-shadow:0 1px 0 #26334a20}
+.primary{background:var(--green);color:#153b30;font-size:1.1rem;width:100%;margin-top:14px}
+.secondary{background:#e9e6ff;color:#51489b}
+.choice{background:#f3f7ff;border:2px solid #dce6f6;color:#34415b;width:100%;text-align:left;margin:7px 0;font-size:1.1rem}
+.choice.selected{border-color:#8b78db;background:#f0edff}
+.choice:disabled{cursor:default;opacity:1}
+.topline{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+.pill{background:#f0edff;color:#5b57a6;border-radius:30px;padding:8px 13px;font-weight:800;font-size:.9rem}
+.score{background:#fff4cc;color:#765400;border-radius:30px;padding:8px 13px;font-weight:800}
+.progress{height:10px;background:#edf0f6;border-radius:20px;overflow:hidden;margin:12px 0 22px}
+.bar{height:100%;background:linear-gradient(90deg,#65c99b,#65c9e8);width:0;transition:width .25s}
+.stage{font-size:.9rem;font-weight:900;letter-spacing:.05em;color:#7771b6;text-transform:uppercase}
+.question{font-size:clamp(1.35rem,4vw,2rem);font-weight:900;text-align:center;margin:18px 0}
+.visual{background:#f8fbff;border-radius:22px;padding:18px;margin:15px 0;text-align:center}
+.tenrow{display:flex;justify-content:center;gap:7px;flex-wrap:wrap;margin:8px 0}
+.ten{width:42px;height:27px;border-radius:7px;background:#75cdea;border:2px solid #42a9ce;display:inline-block;position:relative}
+.ten:after{content:"";position:absolute;left:50%;top:0;height:100%;border-left:1px dashed #fff}
+.ones{font-size:1.55rem;letter-spacing:4px;line-height:1.7;overflow-wrap:anywhere}
+input{font:inherit;font-size:1.5rem;text-align:center;width:100%;padding:15px;border:3px solid #dce6f6;border-radius:16px;outline:none}
+input:focus{border-color:#8b78db}
+.feedback{margin-top:16px;border-radius:18px;padding:16px;text-align:center;font-weight:900;font-size:1.3rem}
+.good{background:#e7fff2;color:#18784d}
+.try{background:#fff0f2;color:#b43f60}
+.hidden{display:none!important}
+.small{color:#778198;font-size:.9rem}
+footer{text-align:center;color:#7a8498;font-size:.8rem;margin:18px}
+@media(max-width:420px){body{padding:10px}.panel{padding:16px}.choice{font-size:1rem}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+ <div class="logo">🌈🔢⭐</div>
+ <h1>Misi Matematik Cilik 1–100</h1>
+ <div class="sub">Belajar sambil bermain • Umur 4–6 tahun</div>
+</header>
+<main class="panel" id="home">
+ <div class="center">
+  <div style="font-size:3rem">🧸🍎🚀</div>
+  <h2>Hai, adik! Jom bermain matematik!</h2>
+  <p>20 soalan • 3 tahap • Kumpul 20 bintang!</p>
+  <p class="small">Tekan jawapan yang betul. Kalau tersilap, cuba lagi. Adik pasti boleh!</p>
+  <button class="primary" onclick="startGame()">🚀 MULA BERMAIN</button>
+ </div>
+</main>
+<main class="panel hidden" id="game">
+ <div class="topline">
+  <span class="pill" id="stagePill">TAHAP 1</span>
+  <span class="score">⭐ Markah: <span id="score">0</span></span>
+ </div>
+ <div class="small" id="count">SOALAN 1 / 20</div>
+ <div class="progress"><div class="bar" id="bar"></div></div>
+ <div class="stage" id="stageName"></div>
+ <div class="question" id="question"></div>
+ <div class="visual" id="visual"></div>
+ <div id="answers"></div>
+ <div id="feedback" class="feedback hidden" aria-live="polite"></div>
+ <button id="retry" class="primary hidden" onclick="retryQuestion()">🔄 CUBA LAGI</button>
+ <button id="next" class="primary hidden" onclick="nextQuestion()">SOALAN SETERUSNYA ➜</button>
+</main>
+<main class="panel hidden center" id="result">
+ <div style="font-size:4rem">🏆🎉🌟</div>
+ <h2>TAHNIAH, ADIK!</h2>
+ <div style="font-size:2.8rem;font-weight:900;color:#5b57a6" id="finalScore">0 / 20</div>
+ <p id="resultText">Awak hebat!</p>
+ <button class="primary" onclick="startGame()">🔄 MAIN SEMULA</button>
+</main>
+<footer>Game pendidikan • Tice Amie</footer>
+</div>
+<script>
+const qs = [
+ {s:1,t:"Kira dan padankan",kind:"count",tens:1,ones:2,n:12,opts:[10,12,14]},
+ {s:1,t:"Kira dan padankan",kind:"count",tens:2,ones:5,n:25,opts:[15,25,20]},
+ {s:1,t:"Kira dan padankan",kind:"count",tens:3,ones:0,n:30,opts:[13,30,33]},
+ {s:1,t:"Kira dan padankan",kind:"count",tens:4,ones:6,n:46,opts:[46,40,64]},
+ {s:1,t:"Kira dan padankan",kind:"count",tens:5,ones:8,n:58,opts:[58,85,50]},
+ {s:1,t:"Kira dan padankan",kind:"count",tens:7,ones:0,n:70,opts:[17,70,77]},
+ {s:1,t:"Kira dan padankan",kind:"count",tens:9,ones:3,n:93,opts:[39,90,93]},
+ {s:2,t:"Kira dan masukkan nombor",kind:"input",q:"11 + 3 = ?",n:14},
+ {s:2,t:"Kira dan masukkan nombor",kind:"input",q:"22 + 5 = ?",n:27},
+ {s:2,t:"Kira dan masukkan nombor",kind:"input",q:"31 + 6 = ?",n:37},
+ {s:2,t:"Kira dan masukkan nombor",kind:"input",q:"43 + 5 = ?",n:48},
+ {s:2,t:"Kira dan masukkan nombor",kind:"input",q:"60 + 20 = ?",n:80},
+ {s:2,t:"Kira dan masukkan nombor",kind:"input",q:"80 + 5 = ?",n:85},
+ {s:2,t:"Kira dan masukkan nombor",kind:"input",q:"90 + 6 = ?",n:96},
+ {s:3,t:"Padankan nombor dengan perkataan",kind:"word",n:18,w:"lapan belas",opts:["lapan belas","lapan puluh","dua belas"]},
+ {s:3,t:"Padankan nombor dengan perkataan",kind:"word",n:34,w:"tiga puluh empat",opts:["empat puluh tiga","tiga puluh empat","tiga belas"]},
+ {s:3,t:"Padankan nombor dengan perkataan",kind:"word",n:62,w:"enam puluh dua",opts:["dua puluh enam","enam puluh dua","enam belas"]},
+ {s:3,t:"Padankan nombor dengan perkataan",kind:"word",n:71,w:"tujuh puluh satu",opts:["tujuh belas","lapan puluh satu","tujuh puluh satu"]},
+ {s:3,t:"Padankan nombor dengan perkataan",kind:"word",n:89,w:"lapan puluh sembilan",opts:["lapan puluh sembilan","sembilan puluh lapan","lapan belas"]},
+ {s:3,t:"Padankan nombor dengan perkataan",kind:"word",n:100,w:"seratus",opts:["seribu","sembilan puluh","seratus"]}
+];
+let idx=0,score=0,locked=false,selected=null;
+const $=id=>document.getElementById(id);
+function speak(txt){if('speechSynthesis' in window){speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(txt);u.lang='ms-MY';u.rate=.88;speechSynthesis.speak(u)}}
+function startGame(){idx=0;score=0;locked=false;$('home').classList.add('hidden');$('result').classList.add('hidden');$('game').classList.remove('hidden');render()}
+function render(){
+ locked=false;selected=null;let q=qs[idx];
+ $('score').textContent=score;$('count').textContent=`SOALAN ${idx+1} / 20`;$('bar').style.width=((idx+1)/20*100)+'%';
+ $('stagePill').textContent='TAHAP '+q.s;$('stageName').textContent=q.t;
+ $('question').textContent=q.kind==='count'?'Kira semua objek dan pilih nombor yang betul.':q.kind==='input'?q.q:'Nombor ini disebut sebagai apa?';
+ $('visual').innerHTML='';
+ if(q.kind==='count'){
+  let ten='';for(let i=0;i<q.tens;i++)ten+='<span class="ten" title="sepuluh"></span>';
+  let ones='';for(let i=0;i<q.ones;i++)ones+='🟡';
+  $('visual').innerHTML=`<div style="font-weight:800;margin-bottom:8px">🔟 Setiap batang biru mewakili 10</div><div class="tenrow">${ten}</div><div class="ones">${ones||'—'}</div><div class="small">Batang biru = kumpulan sepuluh • Bulatan kuning = satu</div>`;
+ } else if(q.kind==='input'){
+  $('visual').innerHTML='<div style="font-size:2rem">🧮 ✏️</div><div class="small">Taip jawapan dalam kotak</div><input id="numInput" type="number" min="1" max="100" inputmode="numeric" placeholder="Jawapan" onkeydown="handleEnter(event)"><button class="secondary" style="margin-top:10px" onclick="checkInput()">SEMAK</button>';
+ } else {
+  $('visual').innerHTML=`<div style="font-size:1.1rem;color:#7771b6;font-weight:800">PILIH PERKATAAN YANG BETUL</div><div style="font-size:3.4rem;font-weight:900;color:#e18b38">${q.n}</div>`;
+ }
+ $('answers').innerHTML='';
+ if(q.kind!=='input'){
+  q.opts.forEach((o,i)=>{let b=document.createElement('button');b.className='choice';b.textContent=(i+1)+'. '+o;b.onclick=()=>choose(o,b);$('answers').appendChild(b)});
+ }
+ $('feedback').className='feedback hidden';$('retry').classList.add('hidden');$('next').classList.add('hidden');
+}
+function choose(v,b){if(locked)return;selected=v;document.querySelectorAll('.choice').forEach(x=>x.classList.remove('selected'));b.classList.add('selected');check(v)}
+function handleEnter(event){if(event.key==='Enter')checkInput()}
+function checkInput(){if(locked)return;let el=$('numInput');if(!el||el.value.trim()===''){el&&el.focus();return}check(Number(el.value))}
+function check(v){
+ if(locked)return;let q=qs[idx];if(String(v)===String(q.kind==='word'?q.w:q.n)){
+  locked=true;score++;$('score').textContent=score;$('feedback').textContent='🎉 AWAK BIJAK! Hebatnya! 👏';$('feedback').className='feedback good';$('next').classList.remove('hidden');$('retry').classList.add('hidden');document.querySelectorAll('.choice').forEach(x=>x.disabled=true);speak('Awak bijak! Hebatnya!');
+ }else{
+  $('feedback').textContent='Belum tepat. Jangan putus asa, cuba lagi! 😊';$('feedback').className='feedback try';$('retry').classList.remove('hidden');speak('Belum tepat. Cuba lagi.');
+ }
+}
+function retryQuestion(){ $('feedback').className='feedback hidden';$('retry').classList.add('hidden');if(qs[idx].kind==='input'){$('numInput').value='';$('numInput').focus()}else{document.querySelectorAll('.choice').forEach(b=>{b.disabled=false;b.classList.remove('selected')})}selected=null}
+function nextQuestion(){if(idx<qs.length-1){idx++;render()}else{finish()}}
+function finish(){$('game').classList.add('hidden');$('result').classList.remove('hidden');$('finalScore').textContent=score+' / 20';$('resultText').textContent=score>=18?'Cemerlang! Awak memang bijak! 🌟':score>=14?'Bagus! Teruskan berlatih! 💖':'Syabas kerana sudah mencuba! Jom bermain lagi!';speak('Tahniah! Awak sudah tamat permainan. Awak bijak!')}
+</script>
+</body>
+</html>
