@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Misi Pemahaman KVKV - Tice Amie</title>
+<style>
+:root{--purple:#7c3aed;--pink:#ec4899;--ink:#30224b;--bg:#f8f3ff}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:linear-gradient(135deg,#f8f3ff,#fff0f8);color:var(--ink);padding:16px}
+.wrap{max-width:760px;margin:auto}
+.card{background:white;border-radius:24px;padding:22px;box-shadow:0 10px 30px #55338818;margin:12px 0}
+h1,h2{margin:0 0 12px} h1{font-size:clamp(24px,5vw,36px);color:var(--purple)} h2{color:var(--purple)}
+.sub{color:#755b91;font-weight:700}
+button{border:0;border-radius:14px;padding:12px 16px;font-size:16px;font-weight:700;cursor:pointer}
+.primary{background:var(--purple);color:white}.voice{background:#fce7f3;color:#9d174d}
+.option{display:block;width:100%;background:#f5f0ff;color:var(--ink);margin:9px 0;text-align:left;border:2px solid transparent}
+.option:hover{border-color:#c4b5fd}.option.correct{background:#dcfce7;border-color:#22c55e}.option.wrong{background:#fee2e2;border-color:#ef4444}
+#picture{font-size:90px;text-align:center;padding:18px}
+#prompt{font-size:22px;font-weight:800;text-align:center;margin:12px}
+#feedback{font-weight:800;min-height:30px;text-align:center;margin:12px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:center}
+.progress{height:12px;background:#eee;border-radius:20px;overflow:hidden;margin:10px 0}.bar{height:100%;background:linear-gradient(90deg,var(--purple),var(--pink));width:0%}
+.hidden{display:none}.small{font-size:14px;color:#6b5a82}
+input{padding:14px;border:2px solid #ddd;border-radius:12px;font-size:17px;width:100%;margin:8px 0}
+.cert{border:8px double #a78bfa;border-radius:20px;padding:24px;text-align:center;background:#fffdfd}
+.cert h1{color:#8b5cf6}.stars{font-size:28px;color:#f59e0b}
+@media print{body{background:white;padding:0}.no-print{display:none!important}#certificate{display:block!important}.cert{margin:0;min-height:90vh;display:flex;flex-direction:column;justify-content:center}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<section class="card" id="start">
+<div style="text-align:center;font-size:54px">🎮🌟</div>
+<h1 style="text-align:center">MISI PEMAHAMAN KVKV</h1>
+<p class="sub" style="text-align:center">20 soalan • Tice Amie</p>
+<p>Masukkan nama murid sebelum memulakan misi.</p>
+<input id="studentName" placeholder="Nama murid" maxlength="50" autocomplete="off">
+<div class="row"><button class="primary" onclick="startGame()">MULA MISI 🚀</button><button class="voice" onclick="speak('Selamat datang ke Misi Pemahaman KVKV. Mari kita bermain!')">🔊 Dengar</button></div>
+</section>
+
+<section class="card hidden" id="game">
+<div class="row" style="justify-content:space-between"><span id="mission">Misi</span><span id="score">⭐ 0</span></div>
+<div class="progress"><div class="bar" id="bar"></div></div>
+<div class="small" id="counter"></div>
+<div id="picture"></div><div id="prompt"></div>
+<button class="voice" style="display:block;margin:auto" onclick="speakCurrent()">🔊 Dengar soalan</button>
+<div id="answers"></div><div id="feedback"></div>
+<div class="row"><button id="next" class="primary hidden" onclick="nextQuestion()">Soalan seterusnya ➜</button></div>
+</section>
+
+<section class="card hidden" id="end">
+<div style="text-align:center"><div style="font-size:60px">🏆🎉</div><h1>Awak berjaya!</h1><p id="finalText"></p><div class="stars" id="finalStars"></div>
+<button class="primary" onclick="showCertificate()">Lihat Sijil 🏅</button>
+<button class="voice" onclick="speak('Tahniah! Awak berjaya menamatkan semua misi!')">🔊 Suara Tahniah</button>
+<button class="voice" onclick="location.reload()">Main semula ↻</button></div>
+</section>
+
+<section class="card hidden" id="certificate">
+<div class="cert">
+<div style="font-size:56px">🏅🌟</div>
+<h1>SIJIL PENCAPAIAN</h1>
+<h2>MISI PEMAHAMAN KVKV</h2>
+<p>Dengan bangga diberikan kepada</p>
+<h1 id="certName" style="color:#db2777"></h1>
+<p>kerana berjaya menamatkan permainan</p>
+<h2>20 Misi Pemahaman Bahasa Melayu</h2>
+<p id="certScore"></p>
+<div style="font-size:40px">🎉 ⭐ 🎉</div>
+<p><b>TICE AMIE</b><br>Terus rajin membaca!</p>
+</div>
+<div class="row no-print" style="margin-top:15px"><button class="primary" onclick="window.print()">🖨️ Cetak sijil</button><button class="voice" onclick="backToEnd()">Kembali</button></div>
+</section>
+</div>
+
+<script>
+const questions=[
+{section:"A • Cari perkataan berdasarkan gambar",type:"choice",pic:"🥄",prompt:"Pilih perkataan yang betul.",answer:"sudu",choices:["sudu","sudi","sadu"]},
+{section:"A • Cari perkataan berdasarkan gambar",type:"choice",pic:"⚽",prompt:"Pilih perkataan yang betul.",answer:"bola",choices:["bala","bola","balu"]},
+{section:"A • Cari perkataan berdasarkan gambar",type:"choice",pic:"📘",prompt:"Pilih perkataan yang betul.",answer:"buku",choices:["buka","buku","baku"]},
+{section:"A • Cari perkataan berdasarkan gambar",type:"choice",pic:"🥛",prompt:"Pilih perkataan yang betul.",answer:"susu",choices:["susu","sisi","sasa"]},
+{section:"A • Cari perkataan berdasarkan gambar",type:"choice",pic:"TABLE_DRAWING",prompt:"Pilih perkataan yang betul.",answer:"meja",choices:["meja","maja","meju"]},
+{section:"B • Susun suku kata",type:"choice",pic:"👕",prompt:"Susun suku kata menjadi perkataan.",answer:"baju",correctChoice:"ba + ju",choices:["ba + ju","bu + ja","ja + bu"]},
+{section:"B • Susun suku kata",type:"choice",pic:"⚽",prompt:"Susun suku kata menjadi perkataan.",answer:"bola",correctChoice:"bo + la",choices:["bo + la","ba + lo","la + bo"]},
+{section:"B • Susun suku kata",type:"choice",pic:"📘",prompt:"Susun suku kata menjadi perkataan.",answer:"buku",correctChoice:"bu + ku",choices:["bu + ku","ba + ku","ku + bu"]},
+{section:"B • Susun suku kata",type:"choice",pic:"TABLE_DRAWING",prompt:"Susun suku kata menjadi perkataan.",answer:"meja",correctChoice:"me + ja",choices:["me + ja","ma + je","ja + me"]},
+{section:"B • Susun suku kata",type:"choice",pic:"🐎",prompt:"Susun suku kata menjadi perkataan.",answer:"kuda",correctChoice:"ku + da",choices:["ku + da","ka + du","du + ku"]},
+{section:"C • Lengkapkan ayat",type:"choice",pic:"👧📘",prompt:"Mimi baca _____.",answer:"buku",choices:["buku","bola","susu"]},
+{section:"C • Lengkapkan ayat",type:"choice",pic:"👦⚽",prompt:"Raju ada _____.",answer:"bola",choices:["meja","bola","baju"]},
+{section:"C • Lengkapkan ayat",type:"choice",pic:"👧🥛",prompt:"Siti minum _____.",answer:"susu",choices:["susu","buku","kuda"]},
+{section:"C • Lengkapkan ayat",type:"choice",pic:"👦👕",prompt:"Abu pakai _____.",answer:"baju",choices:["baju","meja","bola"]},
+{section:"C • Lengkapkan ayat",type:"choice",pic:"🐎",prompt:"Kuda ada _____.",answer:"kaki",choices:["kaki","buku","susu"]},
+{section:"D • Fahami gambar",type:"choice",pic:"🐎🏃",prompt:"Pilih ayat yang sesuai dengan gambar.",answer:"kuda lari",choices:["kuda lari","kuda baca buku"]},
+{section:"D • Fahami gambar",type:"choice",pic:"👧🪑",prompt:"Pilih ayat yang sesuai dengan gambar.",answer:"Mimi duduk",choices:["Mimi duduk","Mimi minum bola"]},
+{section:"D • Fahami gambar",type:"choice",pic:"👦📘",prompt:"Pilih ayat yang sesuai dengan gambar.",answer:"Raju baca buku",choices:["Raju baca buku","Raju pakai meja"]},
+{section:"E • Fahami cerita",type:"choice",pic:"📖🐱",prompt:"Cerita: Mimi ada kucing. Mimi beri kucing susu. Apakah yang Mimi beri kepada kucing?",answer:"susu",choices:["susu","bola","baju"]},
+{section:"E • Fahami cerita",type:"choice",pic:"📖👦⚽",prompt:"Cerita: Raju ada bola. Raju bawa bola ke taman. Apakah yang Raju bawa?",answer:"bola",choices:["bola","buku","meja"]}
+];
+let idx=0,score=0,student="";
+function speak(t){if(!("speechSynthesis"in window)){alert("Suara tidak disokong pada peranti ini.");return;}speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(t);u.lang="ms-MY";u.rate=.9;speechSynthesis.speak(u)}
+function startGame(){student=document.getElementById("studentName").value.trim();if(!student){alert("Sila masukkan nama murid dahulu.");return;}document.getElementById("start").classList.add("hidden");document.getElementById("game").classList.remove("hidden");idx=0;score=0;render()}
+function speakCurrent(){let q=questions[idx];speak(q.prompt+" Pilihan jawapan: "+q.choices.join(", "))}
+function shuffle(a){for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function render(){let q=questions[idx];document.getElementById("mission").textContent=q.section;document.getElementById("score").textContent="⭐ "+score;document.getElementById("counter").textContent=`Soalan ${idx+1} daripada ${questions.length}`;document.getElementById("bar").style.width=((idx)/questions.length*100)+"%";document.getElementById("picture").innerHTML=q.pic==="TABLE_DRAWING"?`<svg viewBox="0 0 300 220" role="img" aria-label="Gambar meja" style="width:min(300px,90%);height:auto"><ellipse cx="150" cy="183" rx="95" ry="13" fill="#e8e0d5"/><rect x="65" y="78" width="170" height="28" rx="8" fill="#b87942" stroke="#8c542c" stroke-width="3"/><rect x="78" y="103" width="18" height="84" rx="4" fill="#9b6034"/><rect x="204" y="103" width="18" height="84" rx="4" fill="#9b6034"/><rect x="112" y="103" width="18" height="84" rx="4" fill="#9b6034"/><rect x="170" y="103" width="18" height="84" rx="4" fill="#9b6034"/><rect x="55" y="55" width="190" height="32" rx="8" fill="#d99a5b" stroke="#8c542c" stroke-width="3"/><path d="M65 64h170" stroke="#f2c28b" stroke-width="5" stroke-linecap="round"/></svg>`:q.pic;document.getElementById("prompt").textContent=q.prompt;document.getElementById("feedback").textContent="";document.getElementById("next").classList.add("hidden");let container=document.getElementById("answers");container.innerHTML="";shuffle([...q.choices]).forEach(choice=>{let b=document.createElement("button");b.className="option";b.textContent=choice;b.onclick=()=>answer(b,choice,q);container.appendChild(b)})}
+function answer(button,choice,q){let buttons=[...document.querySelectorAll(".option")];buttons.forEach(b=>b.disabled=true);if(choice===(q.correctChoice||q.answer)){button.classList.add("correct");score++;document.getElementById("feedback").textContent="🌟 Awak berjaya!";speak("Awak berjaya!")}else{button.classList.add("wrong");buttons.forEach(b=>{if(b.textContent===(q.correctChoice||q.answer))b.classList.add("correct")});document.getElementById("feedback").textContent="💡 Cuba lagi! Jawapan yang betul ialah: "+q.answer;speak("Cuba lagi. Jawapan yang betul ialah "+q.answer)}document.getElementById("score").textContent="⭐ "+score;document.getElementById("next").classList.remove("hidden")}
+function nextQuestion(){idx++;if(idx>=questions.length){finish();return}render()}
+function finish(){document.getElementById("game").classList.add("hidden");document.getElementById("end").classList.remove("hidden");document.getElementById("finalText").textContent=`${student}, awak menjawab dengan ${score} daripada 20 markah.`;document.getElementById("finalStars").textContent="⭐".repeat(Math.max(1,Math.round(score/4)));speak("Tahniah "+student+". Awak berjaya menamatkan permainan!")}
+function showCertificate(){document.getElementById("end").classList.add("hidden");document.getElementById("certificate").classList.remove("hidden");document.getElementById("certName").textContent=student;document.getElementById("certScore").textContent=`Pencapaian: ${score} / 20 markah`}
+function backToEnd(){document.getElementById("certificate").classList.add("hidden");document.getElementById("end").classList.remove("hidden")}
+</script>
+</body></html>
